@@ -1,24 +1,33 @@
 name: Daily LinkedIn Post
 on:
   schedule:
-    - cron: '35 11 * * *'  # 9 AM daily (UTC)
-  workflow_dispatch:  # Allow manual runs
+    - cron: '15 11 * * *'  # 4:45 PM IST
+  workflow_dispatch:
+
 jobs:
   generate-post:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Install dependencies
+
+      # 🔽 Add this new step HERE 🔽
+      - name: Clean install dependencies
         run: |
-          pip install -r requirements.txt
+          pip uninstall -y openai pydantic-core
+          pip install --force-reinstall -r requirements.txt
+
+      - name: Install dependencies  # Existing step
+        run: pip install -r requirements.txt
+
       - name: Run Script
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-        run: python main.py
+        run: python linkedin_automation.py
