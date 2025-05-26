@@ -1,7 +1,7 @@
 name: Daily LinkedIn Post
 on:
   schedule:
-    - cron: '45 11 * * *'  # 9 AM daily (UTC)
+    - cron: '51 16 * * *'  # 9 AM daily (UTC)
   workflow_dispatch:  # Allow manual runs
 jobs:
   generate-post:
